@@ -60,7 +60,8 @@
             Initiative = initiative;
             CharacterLevel = characterLevel;
             CharacterExp = characterExp;
-           
+            
+
         }
 
         public override string ToString()
@@ -70,9 +71,10 @@
                  $"HP: {Life} of {MaxLife} \n" +
                  $"Hit: {HitChance}% \n" +
                  $"Block: {Block}\n" +
-                 $"Initiative Bonus: {Initiative}\n" +
-                 $"Character Level: {CharacterLevel}\n" +
+                 $"Initiative: {Initiative}\n" +
+                 $"Level: {CharacterLevel}\n" +
                  $"Exp: {CharacterExp}\n";
+
         }
 
     }

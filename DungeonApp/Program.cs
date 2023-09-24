@@ -7,21 +7,54 @@ namespace Dungeon_Application
     {
         static void Main(string[] args)
         {
-
+            string characterName;
             //Title and intro
             TitleScreen();
 
             #region Character Selection
-            //Create a character object
+
+
             //Prompt user for character name   
-
-
-
-            //Prompt user to a hero name
-            //Prompt user to select a class
+            Console.Write("Name your Character: ");
+            characterName = Console.ReadLine();           
 
 
             #endregion
+            #region Race Selection
+            bool validSelection = false;
+            int userChoice;
+
+            do
+            {
+                Console.WriteLine("Choose your race: ");
+                Console.WriteLine(
+                    $"1): Human\n" +
+                    $"2) Elf\n" +
+                    $"3) Dwarf\n" +
+                    $"4) Gnome\n"
+                    );
+
+                int.TryParse(Console.ReadLine(), out userChoice);
+                if (userChoice > 0 && userChoice < 5)
+                {
+                    Race selectedRace = (Race)userChoice;                    
+                    validSelection = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Choice.");
+                }
+
+            } while (!validSelection);
+
+            #endregion
+
+            //Prompt user with starting character info
+            Console.WriteLine();
+            Player player = new Player(characterName, 1, 1, 1, (Race)userChoice, 1, 1, 1);
+            Console.WriteLine(player);
+
+
 
 
             #region Player Menu
@@ -60,6 +93,7 @@ namespace Dungeon_Application
                             break;
                         case "P":
                             Console.WriteLine("Player Info");
+                            Console.WriteLine(player);
                             break;
                         case "M":
                             Console.WriteLine("Monster Info");
@@ -155,9 +189,6 @@ namespace Dungeon_Application
                 -------- Press Any Key to Continue -------
                 ");
             Console.ResetColor();
-
-
-
             Console.ReadLine();
 
         }
