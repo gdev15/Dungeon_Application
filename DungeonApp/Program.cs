@@ -1,6 +1,7 @@
 ﻿using System;
+using DungeonLibrary;
 
-namespace DungeonApp
+namespace Dungeon_Application
 {
     internal class Program
     {
@@ -8,14 +9,78 @@ namespace DungeonApp
         {
 
             //Title and intro
+            TitleScreen();
 
+            #region Character Selection
             //Create a character object
-            //Prompt user for character name                           
+            //Prompt user for character name   
+
+
+
+            //Prompt user to a hero name
             //Prompt user to select a class
 
-            //TODO Add game menu
 
+            #endregion
+
+
+            #region Player Menu
+
+            //Game loop:
+            bool exit = false;
+
+            do
+            {
+                bool reload = false;
+                do
+                {
+                    //Prompt the user:
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\nPlease choose an action:\n" +
+                                   "A) Attack\n" +
+                                   "R) Run away\n" +
+                                   "P) Player Info\n" +
+                                   "M) Monster Info\n" +
+                                   "X) Exit\n"
+                                   );
+                    //Capture user's menu selection
+                    Console.ResetColor();
+                    string menuSelection = Console.ReadKey(true).Key.ToString();//Executes upon input without user hitting enter.
+                    Console.Clear();
+                    switch (menuSelection)
+                    {
+                        case "A":
+                            Console.WriteLine("Combat!");
+
+
+                            break;
+                        case "R":
+                            Console.WriteLine("Run Away!");
+
+                            break;
+                        case "P":
+                            Console.WriteLine("Player Info");
+                            break;
+                        case "M":
+                            Console.WriteLine("Monster Info");
+                            break;
+                        case "E":
+                        case "X":
+                            Console.WriteLine("Until Next Time!");
+                            break;
+                        default:
+                            Console.WriteLine("Invalid Choice");
+
+                            break;
+
+
+                    }
+                } while (!reload && !exit);
+
+            } while (!exit);
+            #endregion
             //TODO Prompt player for hero name    
+
 
             //TODO create a menu for a player
             //Would like the player to select a class.
@@ -53,5 +118,49 @@ namespace DungeonApp
 
 
         }
+
+        //TitleScreen() method to prompt the user with the intro to the game.
+        public static void TitleScreen()
+        {
+            Console.WriteLine(@"
+
+                MMMMMO' ...,oXMMMMMMMMMMMMMMXo,... 'OMMMMM
+                MMMMMK,      ;OWMMMMMMMMMMWO;      ,KMMMMM
+                MMMMMN:   .'  .c0WMMMMMMW0c.  '.   :NMMMMM
+                MMMMMWk'  .;:'  .oKMMMMKo.  ':;.  'kWMMMMM
+                MMMMMMMXd,  .;:'  'kX0d'  ':;.  ,dXMMMMMMM
+                MMMMMMMMMNx;. .;:;;c,.  ':;. .;kNMMMMMMMMM
+                MMMMMMMMMMMNO:..:d;. .':;. .:ONMMMMMMMMMMM
+                MMMMMMMMMMMMMW0o;. ':c;. .cOWMMMMMMMMMMMMM
+                MMMMMMMWKXWMMXo. ':;.  .cc;oXMMWKKWMMMMMMM
+                MMMMMMXl..;oko'':;. ':::c:''oko;..lXMMMMMM
+                MMMMMWKo'    'cd;.;xXNO;.;dc'.   'oKWMMMMM
+                MMMNOdxO0o'    ,oONMMMMNOo,    'o0OxdONMMM
+                MMNdoKNO:';:'   'OWMMMMWO'   ':;':ONKodNMM
+                MM0d00:.  .xKx,  :XMMMMX:  ,xKx.  .:00d0MM
+                M0oclc,..lKWMMXxdKWMMMMWKdxXMMWKl..,clco0M
+                M.    :kKWMMMMMMMMMMMMMMMMMMMMMMWKk:    .M
+                M     :XMMMMMMMMMMMMMMMMMMMMMMMMMMX:     M
+                Ml.  ,OWMMMMMMMMMMMMMMMMMMMMMMMMMMWO,  .lM
+                ");
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(@"
+                ************ DUNGEON HEROES **************
+                ");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(@"
+                -------- Press Any Key to Continue -------
+                ");
+            Console.ResetColor();
+
+
+
+            Console.ReadLine();
+
+        }
+
     }
 }
