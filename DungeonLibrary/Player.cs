@@ -44,5 +44,12 @@ namespace DungeonLibrary
 
         }
 
+        //Using the implementation of the override ToString() in the Character class to add the character race for the user to see
+        public override string ToString()
+        {
+            return base.ToString() + $"Race: {PlayerRace}\n";
+        }
+
     }
+
 }
