@@ -1,4 +1,8 @@
 ﻿using System;
+using System.ComponentModel.Design;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Xml.Linq;
 using DungeonLibrary;
 
 namespace Dungeon_Application
@@ -8,6 +12,15 @@ namespace Dungeon_Application
         static void Main(string[] args)
         {
             string characterName;
+            //Default character stats
+            int hitChance = 10;
+            int block = 30;
+            int maxLife = 75;
+            int initiative = 5;
+            int characterLevel = 1;
+            int characterExp = 0;
+
+          
             //Title and intro
             TitleScreen();
 
@@ -50,18 +63,19 @@ namespace Dungeon_Application
             #endregion
 
             //Prompt user with starting character info
+            
             Console.WriteLine();
-            Player player = new Player(characterName, 1, 1, 1, (Race)userChoice, 1, 1, 1);
-            Console.WriteLine(player);
-
-
-
+            Player player = new Player(characterName, hitChance, block, maxLife, (Race)userChoice, initiative, characterLevel, characterExp);
+            Console.WriteLine(player);          
 
             #region Player Menu
 
             //Game loop:
-            bool exit = false;
 
+
+            bool isMonsterSpawned = false;
+            bool exit = false;
+            Monster generatedMonster = new Monster();
             do
             {
                 bool reload = false;
@@ -96,7 +110,22 @@ namespace Dungeon_Application
                             Console.WriteLine(player);
                             break;
                         case "M":
-                            Console.WriteLine("Monster Info");
+                            
+                            if (!isMonsterSpawned)
+                            {
+
+                                 Monster generateMonster = GenerateMonster(hitChance, block, maxLife,        initiative, characterLevel, characterExp);
+                                generatedMonster = generateMonster;
+                                Console.WriteLine($"{generatedMonster}\nThe Enemy has Spawned!");
+                                isMonsterSpawned = true;
+
+                            }
+                            else 
+                            {
+                               Console.WriteLine($"{generatedMonster}");
+
+                               Console.WriteLine($"Must defeat your current foe before fighting another."); 
+                             }
                             break;
                         case "E":
                         case "X":
@@ -112,16 +141,11 @@ namespace Dungeon_Application
                 } while (!reload && !exit);
 
             } while (!exit);
-            #endregion
-            //TODO Prompt player for hero name    
-
-
-            //TODO create a menu for a player
-            //Would like the player to select a class.
-            //Would like the class to dispaly buffs
-            //Would like the player to choose a dungeon map
-
-            //Once the player selects name, class, and dungeon map
+            #endregion            
+            
+            //**Would like the class to dispaly buffs
+            //**Would like the player to choose a dungeon map
+            
             //TODO Create a loop that allows the game to continue until the user exits
 
             //TODO create a class libraray to hold class types
@@ -192,6 +216,83 @@ namespace Dungeon_Application
             Console.ReadLine();
 
         }
+
+        //Generates random monster
+        public static Monster GenerateMonster(int hitChance,int block, int maxLife, int initiative, int characterLevel, int characterExp)
+        {
+            // Monster monster = getRandomMonster();
+            List<string> monsterName = new List<string>
+                                {
+                                    "Arkoth",
+                                    "Brondar",
+                                    "Crixus",
+                                    "Drakar",
+                                    "Evox",
+                                    "Faelar",
+                                    "Gorthok",
+                                    "Harkon",
+                                    "Ithril",
+                                    "Jarkus",
+                                    "Kornar",
+                                    "Lorthos",
+                                    "Morthak",
+                                    "Norix",
+                                    "Orthar",
+                                    "Praxus",
+                                    "Quoril",
+                                    "Raxus",
+                                    "Sorloth",
+                                    "Trakar",
+                                    "Uxar",
+                                    "Vortar",
+                                    "Warlox",
+                                    "Xaros",
+                                    "Yrthak",
+                                    "Zorath",
+                                    "Aerix",
+                                    "Borak",
+                                    "Cronar",
+                                    "Dorthos",
+                                    "Eryth",
+                                    "Falkor",
+                                    "Groth",
+                                    "Hyrak",
+                                    "Indar",
+                                    "Joril",
+                                    "Karn",
+                                    "Lorax",
+                                    "Moros",
+                                    "Nyrak",
+                                    "Orox",
+                                    "Pyrak",
+                                    "Qyrix",
+                                    "Ronar",
+                                    "Styrix",
+                                    "Tharok",
+                                    "Urth",
+                                    "Varix",
+                                    "Wroth",
+                                    "Xyril"
+                                };
+
+            int monsterRace;
+
+            Random random = new Random();
+            //Select random number for the race
+            monsterRace = random.Next(5, 12);
+            Race monsterSelectedRace = (Race)monsterRace;
+
+            //Generate random monster name
+            Random rand = new Random();
+            int i = rand.Next(50);
+            string name = monsterName[i];
+
+            Monster monster = new Monster(name, hitChance, block, maxLife, monsterSelectedRace, initiative, characterLevel, characterExp);
+
+            return monster;
+        }
+            
+        
 
     }
 }
