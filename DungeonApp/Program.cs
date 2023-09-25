@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Filename: Program.cs
+ * Author: Gabriel Ramirez
+ * Date: 9/23/2023
+ * Description: Executes the dungeon application
+ */
+
+using System;
 using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
 using System.Security.AccessControl;

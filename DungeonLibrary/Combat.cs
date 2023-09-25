@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Filename: Combat.cs
+ * Author: Gabriel Ramirez
+ * Date: 9/23/2023
+ * Description: Provides methods for player combat and turn base action
+ */
 
 namespace DungeonLibrary
 {

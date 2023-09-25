@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+/*
+ * Filename: Monster.cs
+ * Author: Gabriel Ramirez
+ * Date: 9/23/2023
+ * Description: Extends the Character class while adding unique functionality to the Monster object
+ */
 
 namespace DungeonLibrary
 {

@@ -1,4 +1,11 @@
-﻿namespace DungeonLibrary
+﻿/*
+ * Filename: Character.cs
+ * Author: Gabriel Ramirez
+ * Date: 9/23/2023
+ * Description: Abstract class for the Monster and Player classes
+ */
+
+namespace DungeonLibrary
 {
     //Starting blueprint for the Monster and Player classes
     public abstract class Character

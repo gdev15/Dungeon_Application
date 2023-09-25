@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿/*
+ * Filename: Player.cs
+ * Author: Gabriel Ramirez
+ * Date: 9/23/2023
+ * Description: Extends the Character class while adding unique functionality to the Player object
+ */
 namespace DungeonLibrary
 {
     public class Player : Character
