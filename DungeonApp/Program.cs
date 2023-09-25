@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml.Linq;
@@ -14,10 +15,10 @@ namespace Dungeon_Application
         {
             string characterName;
             //Default character stats
-            int hitChance = 10;
-            int block = 30;
+            int hitChance = 0;
+            int block = 15;
             int maxLife = 75;
-            int initiative = 5;
+            int initiative = 0;
             int characterLevel = 1;
             int characterExp = 0;
 
@@ -76,6 +77,13 @@ namespace Dungeon_Application
 
             //Game loop:
 
+            //Check if monster or player is still alive
+            bool isMonster = false;
+            bool isPlayer = false;
+
+            //Did player run
+            bool isScared = false;
+
             //Check for initiative
             bool isInitiativeSet = false;
             int playerInitiative;
@@ -108,23 +116,99 @@ namespace Dungeon_Application
                     {
                         case "A":
                             if (!isInitiativeSet && isMonsterSpawned)
-                            {
-                                //roll a random number
-                                Random rand = new Random();
-                                Random rand2 = new Random();
-                                //Initializes monster initiative
-                                generatedMonster.Initiative = rand2.Next(1,21);
-                                //Initializes player initiative
-                                player.Initiative = rand.Next(1,21);
-                                //Set to true to keep player from rerolling
-                                isInitiativeSet=true;
-                            }
+                            {                             
+                      
+                                //Initializes player and monster initiative by calling accessing the Combat class and using the RollInititative method.
+                                
+                                player.Initiative = Combat.RollInitiative(player);
+                                generatedMonster.Initiative = Combat.RollInitiative(generatedMonster);
 
+                                //Set to true to keep player from rerolling
+                                isInitiativeSet =true;
+
+                            }                            
 
                             if (isInitiativeSet)
                             {
-                                Console.WriteLine("Combat! " + $"{player.Name} Initiative is: {player.Initiative}" + $" {generatedMonster.Name} Initiative is {generatedMonster.Initiative}");
-                                Combat.DoAttack(player, generatedMonster, player.Initiative, generatedMonster.Initiative);
+                                //Set the combat rotation using the method in the Combat class
+                                Combat.CombatRotation(player, generatedMonster);
+                                Console.WriteLine("Combat! " + $"{player.Name} Initiative is: {player.Initiative}" + $"\n{generatedMonster.Name} ({generatedMonster.MonsterRace}) Initiative is {generatedMonster.Initiative}");
+                                //Attack menu while in Combat
+                                #region Attack Menu
+                                do
+                                {
+                                    if (player.Life <= 0)
+                                    {
+                                        Console.WriteLine($"{player.Name} has died!");
+                                        //Check if player is defeated
+                                        isPlayer = true;
+                                        break;
+                                    }
+                                    if (generatedMonster.Life <= 0 && !isScared)
+                                    {
+                                       
+                                        //Check if monster is defeated
+                                        isMonster = true;
+                                        //Set is monster spawned to false
+                                        isMonsterSpawned = false;
+                                        //Set the initiative to false
+                                        isInitiativeSet = false; Console.WriteLine($"You have slain {generatedMonster.Name} ({generatedMonster.MonsterRace})");
+                                        player.CharacterLevel += 1;                                 
+                                        break;
+                                    }
+                                    //Despawns the generatedMonster and allows the player to run away
+                                    if (generatedMonster.Life <= 0 && isScared)
+                                    {
+
+                                        //Check if monster is defeated
+                                        isMonster = true;
+                                        //Set is monster spawned to false
+                                        isMonsterSpawned = false;
+                                        //Set the initiative to false
+                                        isInitiativeSet = false; Console.WriteLine($"You have ran from {generatedMonster.Name} ({generatedMonster.MonsterRace})");
+                                        isScared = false;
+                                        break;
+                                    }
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("\nPlease choose an action:\n" +
+                                                   "S) Swing\n" +
+                                                   "P) Player Info\n" +
+                                                   "M) Monster Info\n" +
+                                                   "R) Run Away\n"
+                                                   );
+                                    string attackSelection = Console.ReadKey( true).Key.ToString();//Executes upon input without user hitting enter.
+                                    Console.ResetColor();
+                                    switch (attackSelection)                                    {
+
+                                        case "S":
+                                           string outcome = Combat.DoAttack(player, generatedMonster);
+                                            Console.WriteLine($"{outcome}");                                     
+                                            break;
+                                        case "M":
+                                            Console.WriteLine($"{generatedMonster}");
+                                            break;
+                                        case "P":
+                                            Console.WriteLine("Player Info");
+                                            Console.WriteLine(player);
+                                            break;
+                                        case "R":                                            
+                                            //Reset initiative
+                                            isInitiativeSet = false;
+                                            Console.WriteLine("You run!");
+                                            //Allows a new Monster to Generate
+                                            generatedMonster.Life = 0;
+                                            isScared = true;
+                                            isMonsterSpawned = false;  
+                                            
+
+                                            break;
+
+
+                                    }
+                                } while (!isMonster || !isPlayer || !isScared);
+
+                                #endregion
+
                             }
                             else
                             {
@@ -153,6 +237,7 @@ namespace Dungeon_Application
                                  Monster generateMonster = GenerateMonster(hitChance, block, maxLife,        initiative, characterLevel, characterExp);
                                 generatedMonster = generateMonster;
                                 Console.WriteLine($"{generatedMonster}\nThe Enemy has Spawned!");
+                                
                                 isMonsterSpawned = true;
 
                             }
@@ -194,8 +279,6 @@ namespace Dungeon_Application
             //TODO Create methods to house the functionality for executing a challenge/battle seuence. The methods should employ logic to determine the winner of the battle. Information about the outcome of the challenge/battle to the player
 
             //TODO Keep track of a player's score and display that information to them during the game when a player views their character information and at the end of the game.
-
-            //TODO Create a class library project that will store custom classes that are blueprint for creating different types of challenges/challengers (i.e. monsters.)
 
             //TODO Customize your dungon app by including extra pieces of functionaity. Need to make 5 unique customizations at a min
 
