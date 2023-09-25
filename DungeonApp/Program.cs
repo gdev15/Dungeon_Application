@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml.Linq;
@@ -60,21 +61,30 @@ namespace Dungeon_Application
 
             } while (!validSelection);
 
+
+            //Clear Console
+            Console.Clear();
             #endregion
 
             //Prompt user with starting character info
             
             Console.WriteLine();
             Player player = new Player(characterName, hitChance, block, maxLife, (Race)userChoice, initiative, characterLevel, characterExp);
-            Console.WriteLine(player);          
+            Console.WriteLine(player);
 
             #region Player Menu
 
             //Game loop:
 
-
+            //Check for initiative
+            bool isInitiativeSet = false;
+            int playerInitiative;
+            int monsterInitiative;
+            //Check for monster spawn
             bool isMonsterSpawned = false;
+            //Allows player to exit
             bool exit = false;
+            //Using the default Monster() a generatedMonster of type Monster will be initialize
             Monster generatedMonster = new Monster();
             do
             {
@@ -97,12 +107,38 @@ namespace Dungeon_Application
                     switch (menuSelection)
                     {
                         case "A":
-                            Console.WriteLine("Combat!");
+                            if (!isInitiativeSet && isMonsterSpawned)
+                            {
+                                //roll a random number
+                                Random rand = new Random();
+                                Random rand2 = new Random();
+                                //Initializes monster initiative
+                                generatedMonster.Initiative = rand2.Next(1,21);
+                                //Initializes player initiative
+                                player.Initiative = rand.Next(1,21);
+                                //Set to true to keep player from rerolling
+                                isInitiativeSet=true;
+                            }
 
+
+                            if (isInitiativeSet)
+                            {
+                                Console.WriteLine("Combat! " + $"{player.Name} Initiative is: {player.Initiative}" + $" {generatedMonster.Name} Initiative is {generatedMonster.Initiative}");
+                                Combat.DoAttack(player, generatedMonster, player.Initiative, generatedMonster.Initiative);
+                            }
+                            else
+                            {
+                                Console.WriteLine("There is no monster spawned yet!");
+                            }
 
                             break;
                         case "R":
-                            Console.WriteLine("Run Away!");
+                            //TODO need to add damaage from foe and a despawn
+                            //Reset initiative
+                            isInitiativeSet = false;
+                            Console.WriteLine("You run!");
+                            //Allows a new Monster to Generate
+                            isMonsterSpawned = false;
 
                             break;
                         case "P":
@@ -146,12 +182,8 @@ namespace Dungeon_Application
             //**Would like the class to dispaly buffs
             //**Would like the player to choose a dungeon map
             
-            //TODO Create a loop that allows the game to continue until the user exits
-
-            //TODO create a class libraray to hold class types
-            //TODO create an abstract parent class. This will define the blueprint for building a player and monster
-
-            //TODO Instantiate a player object in the game
+            //TODO Create a loop that allows the game to continue until the user exits                
+                      
 
             //TODO Create a method that generates a new setting of the player in case they want to run or leave the dungone
 
@@ -276,7 +308,7 @@ namespace Dungeon_Application
                                 };
 
             int monsterRace;
-
+             
             Random random = new Random();
             //Select random number for the race
             monsterRace = random.Next(5, 12);
