@@ -9,6 +9,8 @@ namespace DungeonLibrary
     public enum WeaponType
     {
         Sword = 1,
+        Hammer,
+        Axe,
         Staff,
         Bow,
         Dagger,

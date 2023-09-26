@@ -1,21 +1,87 @@
 ﻿using DungeonLibrary;
+using System.CodeDom.Compiler;
+using System.Threading;
+using System.Xml.Linq;
+
 namespace DungeonApp
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+
             #region Title/Introduction
-            Console.WriteLine("Hello, World!");
+            TitleScreen();
             #endregion
 
             #region Player Creation
+            //Prompt user for character name   
+            Console.Write("Name your Character: ");
+            string characterName = Console.ReadLine();
+
+
+            bool validSelection = false;
+            int userChoice;
+            //Loop for player Race selection
+            do
+            {
+                Console.WriteLine("Choose your race: ");
+                Console.WriteLine(
+                    $"1) Human\n" +
+                    $"2) Elf\n" +
+                    $"3) Dwarf\n" +
+                    $"4) Gnome\n"
+                    );
+
+                int.TryParse(Console.ReadLine(), out userChoice);
+                if (userChoice > 0 && userChoice < 5)
+                {
+                    Race selectedRace = (Race)userChoice;
+                    validSelection = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Choice.");
+                }
+
+            } while (!validSelection); //end of menu
+
+            //Clear Console
+            Console.Clear();
+
+            bool isWeaponSelected = false;
+            int selector;
+            //Loop for player Race selection
+            do
+            {
+
+                Console.WriteLine("Choose your weapon: ");
+                Console.WriteLine(
+                        $"1) Axe\n" +
+                        $"2) Bow\n" +
+                        $"3) Dagger\n" +
+                        $"4) Hammer\n" +
+                        $"5) Mace\n" +
+                        $"6) Staff\n" +
+                        $"7) Sword\n"
+                    );
+
+                //Capture user's menu selection
+                string menuSelection = Console.ReadKey(true).Key.ToString();//Executes upon input
+                switch(menuSelection)
+                {                 
+                        
+
+                }
+
+            } while (!isWeaponSelected);
+
             // - possible expansion - Display a list of pre-created weapons and let them pick one.
             // - recommendation: GetWeapon() in the Weapon class that returns a Weapon.
-            Weapon wep = new("Long Sword", 1, 8, 10, false, WeaponType.Sword);
+
 
             // - possible expansion: Let the player pick their own name and even their own race.
-            Player player = new("Leeroy Jenkins", 70, 5, 40, Race.Elf, wep);
+            Player player = new(characterName, 70, 5, 40, Race.Elf, wep);
             #endregion
 
             //Game loop:
@@ -136,6 +202,47 @@ namespace DungeonApp
             //Refactoring means rewriting code to be more concise, readable, or performant:
             //return rooms[new Random().Next(rooms.Length)];
 
-        }//end GetRoom()        
+        }//end GetRoom()
+
+        //TitleScreen() method to prompt the user with the intro to the game.
+        public static void TitleScreen()
+        {
+            Console.WriteLine(@"
+
+                MMMMMO' ...,oXMMMMMMMMMMMMMMXo,... 'OMMMMM
+                MMMMMK,      ;OWMMMMMMMMMMWO;      ,KMMMMM
+                MMMMMN:   .'  .c0WMMMMMMW0c.  '.   :NMMMMM
+                MMMMMWk'  .;:'  .oKMMMMKo.  ':;.  'kWMMMMM
+                MMMMMMMXd,  .;:'  'kX0d'  ':;.  ,dXMMMMMMM
+                MMMMMMMMMNx;. .;:;;c,.  ':;. .;kNMMMMMMMMM
+                MMMMMMMMMMMNO:..:d;. .':;. .:ONMMMMMMMMMMM
+                MMMMMMMMMMMMMW0o;. ':c;. .cOWMMMMMMMMMMMMM
+                MMMMMMMWKXWMMXo. ':;.  .cc;oXMMWKKWMMMMMMM
+                MMMMMMXl..;oko'':;. ':::c:''oko;..lXMMMMMM
+                MMMMMWKo'    'cd;.;xXNO;.;dc'.   'oKWMMMMM
+                MMMNOdxO0o'    ,oONMMMMNOo,    'o0OxdONMMM
+                MMNdoKNO:';:'   'OWMMMMWO'   ':;':ONKodNMM
+                MM0d00:.  .xKx,  :XMMMMX:  ,xKx.  .:00d0MM
+                M0oclc,..lKWMMXxdKWMMMMWKdxXMMWKl..,clco0M
+                M.    :kKWMMMMMMMMMMMMMMMMMMMMMMWKk:    .M
+                M     :XMMMMMMMMMMMMMMMMMMMMMMMMMMX:     M
+                Ml.  ,OWMMMMMMMMMMMMMMMMMMMMMMMMMMWO,  .lM
+                ");
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(@"
+                ************ DUNGEON HEROES **************
+                ");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(@"
+                -------- Press Any Key to Continue -------
+                ");
+            Console.ResetColor();
+            Console.ReadLine();
+
+        }//end TitleScreen()               
+
     }//end class
 }//end namespace

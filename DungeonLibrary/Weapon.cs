@@ -34,6 +34,8 @@
         public WeaponType Type { get { return _type; } set { _type = value; } }
 
         //CTORS
+ 
+
         //add WeaponType type to param list
         public Weapon(string name, int minDamage, int maxDamage, int bonusHitChance, bool isTwoHanded,
             WeaponType type)
@@ -61,6 +63,12 @@
                    $"Damage: {MinDamage} to {MaxDamage}\n" +
                    $"Bonus Hit: {BonusHitChance}%\n" +
                    $"{(IsTwoHanded ? "Two-" : "One-")}Handed {Type}";//update with Type
+        }
+
+        //Get weapon
+        public static void GetWeapon()
+        {
+
         }
     }
 }
