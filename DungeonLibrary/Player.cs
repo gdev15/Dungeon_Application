@@ -1,55 +1,93 @@
-﻿/*
- * Filename: Player.cs
- * Author: Gabriel Ramirez
- * Date: 9/23/2023
- * Description: Extends the Character class while adding unique functionality to the Player object
- */
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace DungeonLibrary
 {
+    //make it public, make it a child of character
+    //Character includes Name, HitChance, Block, Life and MaxLife
     public class Player : Character
     {
-        //Properties
-        public Race PlayerRace {  get; set; }
 
-        //Constructor with overload
-        public Player(string name, int hitChance, int block, int maxLife, Race playerRace, int initiative, int characterLevel, int characterExp) : base(name, hitChance, block, maxLife, initiative, characterLevel, characterExp)
+        //Fields - none
+        //Properties
+        public Race PlayerRace { get; set; }
+        public Weapon EquippedWeapon { get; set; } //CONTAINMENT
+        public int Score { get; set; }
+
+        //Constructors
+        public Player(string name, int hitChance, int block, int maxLife, Race playerRace, Weapon equippedWeapon) : base(name, hitChance, block, maxLife)
         {
             PlayerRace = playerRace;
-            switch(PlayerRace)
+            EquippedWeapon = equippedWeapon;
+
+            #region Potential Expansion: Racial Bonuses
+            switch (PlayerRace)
             {
                 case Race.Human:
+                    MaxLife += 3;
+                    Life = MaxLife;
                     break;
-                case Race.Elf: 
-                    break;            
-                case Race.Dwarf:
+                case Race.Elf:
+                    HitChance += 5;
                     break;
-                case Race.Gnome: 
+                default:
                     break;
-                case Race.Troll: 
-                    break;
-                case Race.Orc:  
-                    break;
-                case Race.Goblin:
-                    break;
-                case Race.Demon:
-                    break;
-                case Race.Dragon:
-                    break;
-                case Race.Elemental: 
-                    break;
-                case Race.Undead: 
-                    break;
-                
             }
-
+            #endregion
         }
-
-        //Using the implementation of the override ToString() in the Character class to add the character race for the user to see
+        //Methods
         public override string ToString()
         {
-            return base.ToString() + $"Race: {PlayerRace}\n";
+            //A description for the race:
+            string description;
+            switch (PlayerRace)
+            {
+                case Race.Human:
+                    description = "Boring, basic human. Probably snores.";
+                    break;
+                case Race.Elf:
+                    description = "A little big for Santa's workshop...";
+                    break;
+                default:
+                    description = "Somehow, this being has no discernable race...";
+                    break;
+            }
+
+            //add the weapon and the description to the base.ToString()
+            return base.ToString() + $"Weapon:\t{EquippedWeapon}\n" +
+                                     $"Description: {description}\n" +
+                                     $"You have defeated {Score} monster(s)";
+        }//end ToString()
+
+        //override CalcHitChance/CalcDamage... 
+        public override int CalcDamage()
+        {
+            //create the return object
+            int result;
+            //setup necessary resources
+            Random rand = new Random();
+            //modify the return object
+            int minDamage = EquippedWeapon.MinDamage;
+            int maxDamage = EquippedWeapon.MaxDamage;
+            if (EquippedWeapon.Type == WeaponType.Bow && PlayerRace == Race.Elf)
+            {
+                minDamage += 3;
+                maxDamage += 5;
+            }
+            result = rand.Next(minDamage, maxDamage + 1);
+            //return the return object
+            return result;
+
+            //return new Random().Next(EquippedWeapon.MinDamage, EquippedWeapon.MaxDamage + 1);
+        }
+
+        public override int CalcHitChance()
+        {
+            return HitChance + EquippedWeapon.BonusHitChance;
         }
 
     }
-
 }

@@ -1,117 +1,88 @@
-﻿/*
- * Filename: Combat.cs
- * Author: Gabriel Ramirez
- * Date: 9/23/2023
- * Description: Provides methods for player combat and turn base action
- */
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DungeonLibrary
 {
-    public class Combat   
-
+    public class Combat
     {
-
-
-        public static int RollInitiative(Character character)
+        //Handle one side of a round of combat (one attack)
+        public static void DoAttack(Character attacker, Character defender)
         {
-            Random rand = new Random();
-            return rand.Next(1,21);            
+            //pause the application to make it look like something is happening.
+            Thread.Sleep(400);
 
-        }
-        
-        public static bool CombatRotation(Player player, Monster monster)
+            //20% chance to do a thing:
+            //1 to 100: anything less than 20 will succeed
+            int chance = attacker.CalcHitChance() - defender.CalcBlock();
+            int roll = new Random().Next(1, 101);
+            //the attacker "hits" if roll is less than the adjusted hit chance.
+            if (roll >= chance)
+            {
+                //attacker missed:
+                Console.WriteLine($"{attacker.Name} missed!");
+                return;//quit the method.
+            }
+            //calculate the damage:
+            int damage = attacker.CalcDamage();
+
+            //remove life from the defender
+            defender.Life -= damage;
+            //defender.Life = defender.Life - damage;
+            //show the results to the console
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{attacker.Name} hit {defender.Name} for {damage} damage!");
+            Console.ResetColor();
+        }//end DoAttack()
+        //Handle one full round of combat (player attack, then monster attack)
+        //returns true if the monster has died, false if the monster is still alive.
+        public static bool DoBattle(Player player, Monster monster)
         {
-            //Player Goes First
-            if(player.Initiative > monster.Initiative)
-            {
-                Console.WriteLine($"{player.Name} go first");
-                return true;
+            #region expansions
+            //Possible Expansion: Give certain character races or characters with a certain weapon an advantage
+            //if (player.CharacterRace == Race.DarkElf)
+            //{
+            //    Combat.DoAttack(player, monster);
+            //}
+
+            //Consider adding an "Initiative" property to Character
+            //Then check the Initiative to determine who attacks first
+            //if (player.Initiative >= monster.Initiative)
+            //{
+            //    DoAttack(player, monster);
+            //}
+            //else
+            //{
+            //    DoAttack(monster, player);
+            //}
+            #endregion
+
+            DoAttack(player, monster);
+            if (monster.Life > 0)
+            {                
+                DoAttack(monster, player);
+                return false;//monster is still alive
             }
-            //Monster Goes First
-            else
-            {
-                Console.WriteLine($"{monster.Name} ({monster.MonsterRace}) goes first!");
-                return false;
-            }
+            player.Score++;
+
+            #region Combat Rewards - Potential Expansion
+            //healing logic (player.Life += 5)
+
+            //Loot drops (NOTE: This would require an Item class as well as an Inventory Property for 
+            //Player List<Item>)
+
+            //Item rubyNecklace = new Item("Ruby Necklace", "Increases Max Life", MaxLife, 10);
+            //inventory.add(rubyNecklace);
+            //Console.WriteLine($"{player.Name} received {rubyNecklace.Name}!");
+            //Console.WriteLine("{0}", rubyNecklace);
+            #endregion
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nYou killed {monster.Name}!\n");
+            Console.ResetColor();
+            return true;//monster has died!
         }
-
-
-        public static string DoAttack(Character attacker, Character defender)
-        {
-
-
-            string[] defensiveAction =
-            {
-                "Deflected",
-                "Evaded",
-                "Sidestepped",
-                "Ducked",
-                "Avoided",
-                "Eluded",
-                "Blocked",
-                "Shielded",
-                "Fended off",
-                "Parried"
-            };
-
-            //Attacker turn
-            Console.WriteLine("You attacked");
-            Random rand = new Random();
-            //index to get a random string index from the list
-            int index = rand.Next(10);
-            int swing = rand.Next(1, 21);
-            attacker.HitChance = swing;
-            Console.WriteLine($"{attacker.Name} Rolled a {swing}\n");
-
-            //Defender turn
-            Console.WriteLine("Enemy attacked");
-            int index2 = rand.Next( 10);
-            int swing2 = rand.Next(1, 21);
-            Console.WriteLine($"{defender.Name} Rolled a {swing2}\n");
-            Thread.Sleep(1000);
-            Console.Clear();
-            if (attacker.Life <= 0 || defender.Life <= 0)
-            {
-                Console.WriteLine("You are engaged in COMBAT!");
-            }
-            //Attcker Hit
-            if (attacker.HitChance >= defender.Block)
-            {
-                defender.Life -= 30;
-
-                if(defender.Life <= 0)
-                {
-                    defender.Life = 0;
-                }
-                
-                return
-                   $"{defender.Name} has taken damage\n" +
-                   $"{defender.Name} HP: {defender.Life}";
-            }
-            //Defender Hit
-            if(defender.HitChance >= attacker.Block)
-            {
-                attacker.Life -= 30;
-                return
-                   $"{attacker.Name} has taken damage\n" +
-                   $"{attacker.Life}";
-            }
-            if(defender.HitChance <= attacker.Block)
-            {
-                return
-                 $"{attacker.Name} has {defensiveAction[index]}\n";
-            }
-            else
-            {
-                return
-                 $"{defender.Name} has {defensiveAction[index2]}\n";
-            }
-                                     
-        
-
-        }
-
-
-
     }
 }
