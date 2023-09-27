@@ -1,5 +1,6 @@
 ﻿using DungeonLibrary;
 using System.CodeDom.Compiler;
+using System.Numerics;
 using System.Threading;
 using System.Xml.Linq;
 
@@ -9,6 +10,7 @@ namespace DungeonApp
     {
         static void Main(string[] args)
         {
+            
 
             #region Title/Introduction
             TitleScreen();
@@ -21,7 +23,7 @@ namespace DungeonApp
 
 
             bool validSelection = false;
-            int userChoice;
+            int userChoice;         
             //Loop for player Race selection
             do
             {
@@ -32,11 +34,10 @@ namespace DungeonApp
                     $"3) Dwarf\n" +
                     $"4) Gnome\n"
                     );
-
+                //User picks and the value is stored in the userChoice variable
                 int.TryParse(Console.ReadLine(), out userChoice);
                 if (userChoice > 0 && userChoice < 5)
-                {
-                    Race selectedRace = (Race)userChoice;
+                {                                      
                     validSelection = true;
                 }
                 else
@@ -51,9 +52,19 @@ namespace DungeonApp
 
             bool isWeaponSelected = false;
             int selector;
+
+            //Generate a blank player object for customization
+            Player player = new Player();
             //Loop for player Race selection
             do
             {
+
+                string name = "";
+                int minDamage = 0;
+                int maxDamage = 0;
+                int bonusHitChance = 0;
+                bool isTwoHanded = false;
+
 
                 Console.WriteLine("Choose your weapon: ");
                 Console.WriteLine(
@@ -69,19 +80,67 @@ namespace DungeonApp
                 //Capture user's menu selection
                 string menuSelection = Console.ReadKey(true).Key.ToString();//Executes upon input
                 switch(menuSelection)
-                {                 
+                {
+                    case "D1":
                         
+                        Weapon weapon = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded,     WeaponType.Axe);
+                        Player customPlayer = new(characterName, 70, 5, 40, (Race)userChoice, weapon);
+                        player = customPlayer;
+                        isWeaponSelected = true;
+                        break;
 
+                    case "D2":
+
+                        Weapon weapon2 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Bow);
+                        Player customPlayer2 = new(characterName, 70, 5, 40, (Race)userChoice, weapon2);
+                        player = customPlayer2;
+                        isWeaponSelected = true;
+                        break;
+
+                    case "D3":
+
+                        Weapon weapon3 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Dagger);
+                        Player customPlayer3 = new(characterName, 70, 5, 40, (Race)userChoice, weapon3);
+                        player = customPlayer3;
+                        isWeaponSelected = true;
+                        break;
+
+                    case "D4":
+
+                        Weapon weapon4 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Hammer);
+                        Player customPlayer4 = new(characterName, 70, 5, 40, (Race)userChoice, weapon4);
+                        player = customPlayer4;
+                        isWeaponSelected = true;
+                        break;
+
+                    case "D5":
+
+                        Weapon weapon5 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Mace);
+                        Player customPlayer5 = new(characterName, 70, 5, 40, (Race)userChoice, weapon5);
+                        player = customPlayer5;
+                        isWeaponSelected = true;
+                        break;
+                    case "D6":
+
+                        Weapon weapon6 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Staff);
+                        Player customPlayer6 = new(characterName, 70, 5, 40, (Race)userChoice, weapon6);
+                        player = customPlayer6;
+                        isWeaponSelected = true;
+                        break;
+
+                    case "D7":
+
+                        Weapon weapon7 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Sword);
+                        Player customPlayer7 = new(characterName, 70, 5, 40, (Race)userChoice, weapon7);
+                        player = customPlayer7;
+                        isWeaponSelected = true;
+                        break;
                 }
 
-            } while (!isWeaponSelected);
-
-            // - possible expansion - Display a list of pre-created weapons and let them pick one.
-            // - recommendation: GetWeapon() in the Weapon class that returns a Weapon.
+            } while (!isWeaponSelected);           
 
 
-            // - possible expansion: Let the player pick their own name and even their own race.
-            Player player = new(characterName, 70, 5, 40, Race.Elf, wep);
+                    
             #endregion
 
             //Game loop:
@@ -166,14 +225,12 @@ namespace DungeonApp
             } while (!exit); //exit == false
             Console.WriteLine($"You have defeated {player.Score} monster{(player.Score == 1 ? "." : "s.")}");
         }//end Main()
-        //Custom method called GetRoom() -> Ref Magic8Ball lab.
+        //Custom method called GetRoom()
         private static string GetRoom()
         {
-            //Mini-Lab: build a string array of room descriptions
-            //Return a random string from that collection.
-
+            //String array of room descriptions         
             //build an array:
-            //Collection Initialization Syntax:
+
             string[] rooms =
             {
                 "The walls are adorned with portraits of fearsome dragons, while a stuffed unicorn head hangs above the fireplace.",
@@ -204,6 +261,7 @@ namespace DungeonApp
 
         }//end GetRoom()
 
+     
         //TitleScreen() method to prompt the user with the intro to the game.
         public static void TitleScreen()
         {

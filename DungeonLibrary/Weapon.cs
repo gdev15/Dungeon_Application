@@ -34,7 +34,8 @@
         public WeaponType Type { get { return _type; } set { _type = value; } }
 
         //CTORS
- 
+        //Added default constructor so that the player can generate an empty weapon for selection purposes.
+        public Weapon() { }
 
         //add WeaponType type to param list
         public Weapon(string name, int minDamage, int maxDamage, int bonusHitChance, bool isTwoHanded,

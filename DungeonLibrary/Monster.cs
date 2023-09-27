@@ -63,20 +63,27 @@ namespace DungeonLibrary
             return result;//return the return object
         }
 
+         
+
         public static Monster GetMonster()
         {
+            //Generate a random stat:   
+            int stat= RandomRoll();
+            
+            //Generate a random name:
+            
             //create the return object
             Monster m = new();
             //setup necessary resources
-            Monster m1 = new("Monster 1", 50, 20, 25, 2, 8, "Monster 1");
-            Monster m2 = new("Monster 2", 50, 20, 25, 2, 8, "Monster 2");
+            Troll troll = new("Troll", 25, 15, 25, 2, 8, "Troll", stat);
+            Goblin goblin = new("Goblin", 50, 20, 20, 2, 8, "Goblin", stat);
             Monster m3 = new("Monster 3", 50, 20, 25, 2, 8, "Monster 3");
             Monster m4 = new("Monster 4", 50, 20, 25, 2, 8, "Monster 4");
             Monster m5 = new("Monster 5", 50, 20, 25, 2, 8, "Monster 5");
             List<Monster> monsters = new()
             {
-                m1, m1, m1, m1, m1,//5/17
-                m2, m2, m2,        //3/17
+                troll, troll, troll, troll, troll,//5/17
+                goblin, goblin, goblin,goblin,        //3/17
                 m3, m3, m3, m3,    //4/17
                 m4, m4, m4, m4,    //4/17
                 m5                 //1/17
@@ -91,5 +98,14 @@ namespace DungeonLibrary
             //refactor
             //return monsters[new Random().Next(monsters.Count)];
         }
+
+        //Method to generate a random value for stats
+        public static int RandomRoll()
+        {
+            Random random = new Random();
+            int stat = random.Next(1, 5);
+            return stat;
+        }
+
     }
 }
