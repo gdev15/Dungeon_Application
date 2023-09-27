@@ -73,5 +73,7 @@ namespace DungeonLibrary
         //any child classes MUST override abstract methods.
         //you can only define abstract methods inside of abstract classes.
         public abstract int CalcDamage();
+    
+    
     }//end class
 }//end namespace

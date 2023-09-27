@@ -16,7 +16,8 @@ namespace DungeonLibrary
         public Race PlayerRace { get; set; }
         public Weapon EquippedWeapon { get; set; } //CONTAINMENT
         public int Score { get; set; }
-
+        //Added Default to allow a blank Player object to be generated before the user selects customizable options
+        public Player() { }
         //Constructors
         public Player(string name, int hitChance, int block, int maxLife, Race playerRace, Weapon equippedWeapon) : base(name, hitChance, block, maxLife)
         {
@@ -46,11 +47,20 @@ namespace DungeonLibrary
             switch (PlayerRace)
             {
                 case Race.Human:
-                    description = "Boring, basic human. Probably snores.";
+                    description = "Human";
                     break;
                 case Race.Elf:
-                    description = "A little big for Santa's workshop...";
+                    description = "Elf";
                     break;
+
+                case Race.Dwarf:
+                    description = "Dwarf";
+                    break;
+
+                case Race.Gnome:
+                    description = "Gnome";
+                    break;
+
                 default:
                     description = "Somehow, this being has no discernable race...";
                     break;

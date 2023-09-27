@@ -17,7 +17,9 @@ namespace DungeonLibrary
             //20% chance to do a thing:
             //1 to 100: anything less than 20 will succeed
             int chance = attacker.CalcHitChance() - defender.CalcBlock();
+            Console.WriteLine("Adjust Chance: " + chance);
             int roll = new Random().Next(1, 101);
+            Console.WriteLine("Player Roll: " + roll);
             //the attacker "hits" if roll is less than the adjusted hit chance.
             if (roll >= chance)
             {
