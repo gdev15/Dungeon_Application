@@ -11,15 +11,34 @@ namespace DungeonLibrary
         //Handle one side of a round of combat (one attack)
         public static void DoAttack(Character attacker, Character defender)
         {
+            //Need to set initiatives
+            if(attacker.Initiative <= 0 || defender.Initiative <= 0)
+            {
+                attacker.Initiative = RollInitiative();
+                defender.Initiative = RollInitiative();
+                //Conditoin to add bonus initiative to a Demon
+                if(attacker.Name == "Demon")
+                {
+                    //Console.WriteLine($"\nDEMON Before BONUS:  {attacker.Initiative}\n");
+                    attacker.Initiative += attacker.CalcInitiative();
+                   // Console.WriteLine($"DEMON BONUS:  +{attacker.Initiative}");
+                }
+                if (defender.Name == "Demon")
+                {
+                   // Console.WriteLine($"\nDEMON Before BONUS:  {defender.Initiative}\n");
+                    defender.Initiative += defender.CalcInitiative();
+                   // Console.WriteLine($"DEMON BONUS:  +{defender.Initiative}");
+                }
+            }
             //pause the application to make it look like something is happening.
             Thread.Sleep(400);
 
             //20% chance to do a thing:
             //1 to 100: anything less than 20 will succeed
             int chance = attacker.CalcHitChance() - defender.CalcBlock();
-            Console.WriteLine("Adjust Chance: " + chance);
+            //Console.WriteLine("Adjust Chance: " + chance);
             int roll = new Random().Next(1, 101);
-            Console.WriteLine("Player Roll: " + roll);
+            //Console.WriteLine("Player Roll: " + roll);
             //the attacker "hits" if roll is less than the adjusted hit chance.
             if (roll >= chance)
             {
@@ -43,30 +62,29 @@ namespace DungeonLibrary
         public static bool DoBattle(Player player, Monster monster)
         {
             #region expansions
-            //Possible Expansion: Give certain character races or characters with a certain weapon an advantage
-            //if (player.CharacterRace == Race.DarkElf)
-            //{
-            //    Combat.DoAttack(player, monster);
-            //}
+            //Added order of attacks based on the characters initiative
 
-            //Consider adding an "Initiative" property to Character
-            //Then check the Initiative to determine who attacks first
-            //if (player.Initiative >= monster.Initiative)
-            //{
-            //    DoAttack(player, monster);
-            //}
-            //else
-            //{
-            //    DoAttack(monster, player);
-            //}
-            #endregion
-
-            DoAttack(player, monster);
             if (monster.Life > 0)
-            {                
-                DoAttack(monster, player);
+            {
+                if (player.Initiative >= monster.Initiative)
+                {
+                    DoAttack(player, monster);
+                    Console.WriteLine("Player Attacked!");
+                    DoAttack(monster, player);
+                    Console.WriteLine("Monster Attacked!");
+                }
+                else
+                {
+                    DoAttack(monster, player);
+                    Console.WriteLine("Monster Attacked!");
+                    DoAttack(player, monster);
+                    Console.WriteLine("Player Attacked!");
+                }
                 return false;//monster is still alive
             }
+            #endregion
+
+   
             player.Score++;
 
             #region Combat Rewards - Potential Expansion
@@ -85,6 +103,13 @@ namespace DungeonLibrary
             Console.WriteLine($"\nYou killed {monster.Name}!\n");
             Console.ResetColor();
             return true;//monster has died!
+        }
+        //a
+        public static int RollInitiative()
+        {
+            int roll = new Random().Next(1, 21);            
+            return roll;
+         
         }
     }
 }

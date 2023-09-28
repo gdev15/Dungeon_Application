@@ -11,13 +11,6 @@ namespace DungeonLibrary
         Human = 1,
         Elf,
         Dwarf,
-        Gnome,
-        Troll,
-        Orc,
-        Goblin,
-        Demon,
-        Dragon,
-        Elemental,
-        Undead
+        Gnome,     
     }
 }

@@ -32,11 +32,12 @@ namespace DungeonLibrary
             }
             //set { _minDamage = (value > 0 && value < MaxDamage) ? value : 1; }              
         }
-        public Monster(string name, int hitChance, int block, int maxLife, int minDamage, int maxDamage, string description) : base(name, hitChance, block, maxLife)
+        public Monster(string name, int hitChance, int block, int maxLife, int initiative, int minDamage, int maxDamage, string description) : base(name, hitChance, block, maxLife, initiative)
         {
             MaxDamage = maxDamage;
             Description = description;
             MinDamage = minDamage;
+          
         }
 
         public Monster()
@@ -69,24 +70,24 @@ namespace DungeonLibrary
         {
             //Generate a random stat:   
             int stat= RandomRoll();
-            
-            //Generate a random name:
-            
+
+            //Generate a random description:
+            string description = DescriptionGenerator();
             //create the return object
             Monster m = new();
             //setup necessary resources
-            Troll troll = new("Troll", 25, 15, 25, 2, 8, "Troll", stat);
-            Goblin goblin = new("Goblin", 50, 20, 20, 2, 8, "Goblin", stat);
-            Monster m3 = new("Monster 3", 50, 20, 25, 2, 8, "Monster 3");
-            Monster m4 = new("Monster 4", 50, 20, 25, 2, 8, "Monster 4");
-            Monster m5 = new("Monster 5", 50, 20, 25, 2, 8, "Monster 5");
+            Troll troll = new("Troll", 25, 15, 25,0, 2, 8, description, stat);
+            Goblin goblin = new("Goblin", 50, 20, 20,0, 2, 8, description, stat);
+            Demon demon = new("Demon", 50, 20, 25,0, 2, 8, description, 0);
+            Undead undead = new("Undead", 50, 20, 25,0, 2, 8, description, stat);
+            Dragon dragon = new("Dragon", 50, 20, 25,0, 2, 8, description, stat, stat);
             List<Monster> monsters = new()
             {
-                troll, troll, troll, troll, troll,//5/17
-                goblin, goblin, goblin,goblin,        //3/17
-                m3, m3, m3, m3,    //4/17
-                m4, m4, m4, m4,    //4/17
-                m5                 //1/17
+                troll, troll, troll, troll, troll, troll,
+                goblin, goblin, goblin,goblin, goblin,      
+                undead, undead, undead,    
+                demon, demon, demon,    
+                dragon                
             };
             Random rand = new Random();
             int randomIndex = rand.Next(monsters.Count);
@@ -106,6 +107,31 @@ namespace DungeonLibrary
             int stat = random.Next(1, 5);
             return stat;
         }
+
+        //Monster Description Generator
+        public static string DescriptionGenerator()
+        {
+            //Array of weapon names
+            string[] descriptionList = new string[]
+            {
+                "Its eyes glow with an eerie, otherworldly light, sending chills down the spine of those who dare meet its gaze.",
+                "A guttural growl resonates through the air.",              
+                "A foul stench permeates the air around this creature",           
+                "An aura of malevolence surrounds it, causing a palpable tension in the environment.",
+                "Its laughter, cold and mocking, echoes hauntingly, making the bravest warriors second-guess their courage.",
+                "Enveloped in an ethereal mist, its form seems to shift and waver, making it hard to pinpoint.",
+                "Bony protrusions jut from its spine, each sharper than the last, serving as both armor and weapon.",
+                "Chains, rusted from centuries of use, dangle from its limbs, clinking ominously with every movement.",
+                "With every step, the ground trembles slightly, warning of its mighty power and relentless drive.",
+                "Despite its monstrous appearance, there's an intelligence in its eyes, a cunning that's unsettling and profound.",
+            };
+
+            int i = new Random().Next(0, 10);
+
+            string descriptionSelected = descriptionList[i];
+            return descriptionSelected;
+
+        }//end Weapon Name Generator
 
     }
 }

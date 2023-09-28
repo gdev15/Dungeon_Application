@@ -50,10 +50,11 @@
             //MinDamage depends on MaxDamage, so MaxDamage must be set first.
             MaxDamage = maxDamage;
             MinDamage = minDamage;
-            Name = name;
+            Name = name;            
             BonusHitChance = bonusHitChance;
             IsTwoHanded = isTwoHanded;
             Type = type;
+           
         }//Fully-Qualified Constructor
 
         //Method:
