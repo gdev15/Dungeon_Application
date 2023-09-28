@@ -10,7 +10,7 @@ namespace DungeonApp
     {
         static void Main(string[] args)
         {
-            
+            int emptyValue;
 
             #region Title/Introduction
             TitleScreen();
@@ -64,7 +64,7 @@ namespace DungeonApp
                 int maxDamage = 0;
                 int bonusHitChance = 0;
                 bool isTwoHanded = false;
-
+                string weaponName = WeaponNameGenerator(); //Generates a random weapon name
 
                 Console.WriteLine("Choose your weapon: ");
                 Console.WriteLine(
@@ -82,56 +82,64 @@ namespace DungeonApp
                 switch(menuSelection)
                 {
                     case "D1":
+                        minDamage = 2;
+                        maxDamage = 8;
                         
-                        Weapon weapon = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded,     WeaponType.Axe);
-                        Player customPlayer = new(characterName, 70, 5, 40, (Race)userChoice, weapon);
+                        Weapon weapon = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded,     WeaponType.Axe);
+                        Player customPlayer = new(characterName, 70, 5, 40, 0, (Race)userChoice, weapon, minDamage, maxDamage);
                         player = customPlayer;
                         isWeaponSelected = true;
                         break;
 
                     case "D2":
-
-                        Weapon weapon2 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Bow);
-                        Player customPlayer2 = new(characterName, 70, 5, 40, (Race)userChoice, weapon2);
+                        minDamage = 1;
+                        maxDamage = 10;                      
+                        Weapon weapon2 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Bow);
+                        Player customPlayer2 = new(characterName, 70, 5, 40, 0, (Race)userChoice, weapon2, minDamage, maxDamage);
                         player = customPlayer2;
                         isWeaponSelected = true;
                         break;
 
                     case "D3":
-
-                        Weapon weapon3 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Dagger);
-                        Player customPlayer3 = new(characterName, 70, 5, 40, (Race)userChoice, weapon3);
+                        minDamage = 3;
+                        maxDamage = 5;
+                        Weapon weapon3 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Dagger);
+                        Player customPlayer3 = new(characterName, 70, 5, 40, 0,(Race)userChoice, weapon3, minDamage, maxDamage);
                         player = customPlayer3;
                         isWeaponSelected = true;
                         break;
 
                     case "D4":
-
-                        Weapon weapon4 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Hammer);
-                        Player customPlayer4 = new(characterName, 70, 5, 40, (Race)userChoice, weapon4);
+                        minDamage = 2;
+                        maxDamage = 12;
+                        Weapon weapon4 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Hammer);
+                        Player customPlayer4 = new(characterName, 70, 5, 40, 0,(Race)userChoice, weapon4, minDamage, maxDamage);
                         player = customPlayer4;
                         isWeaponSelected = true;
                         break;
 
                     case "D5":
-
-                        Weapon weapon5 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Mace);
-                        Player customPlayer5 = new(characterName, 70, 5, 40, (Race)userChoice, weapon5);
+                        minDamage = 2;
+                        maxDamage = 10;
+                        Weapon weapon5 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Mace);
+                        Player customPlayer5 = new(characterName, 70, 5, 40, 0,(Race)userChoice, weapon5, minDamage, maxDamage);
                         player = customPlayer5;
                         isWeaponSelected = true;
                         break;
                     case "D6":
-
-                        Weapon weapon6 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Staff);
-                        Player customPlayer6 = new(characterName, 70, 5, 40, (Race)userChoice, weapon6);
+                        minDamage = 1;
+                        maxDamage = 8;
+                        Weapon weapon6 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Staff);
+                        Player customPlayer6 = new(characterName, 70, 5, 40,0, (Race)userChoice, weapon6, minDamage, maxDamage);
                         player = customPlayer6;
                         isWeaponSelected = true;
                         break;
 
                     case "D7":
-
-                        Weapon weapon7 = new Weapon(name, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Sword);
-                        Player customPlayer7 = new(characterName, 70, 5, 40, (Race)userChoice, weapon7);
+                        minDamage = 2;
+                        maxDamage = 10;
+                        Weapon weapon7 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Sword);
+                        Player customPlayer7 = new(characterName, 70, 5, 40,0, (Race)userChoice, weapon7, minDamage, maxDamage);
                         player = customPlayer7;
                         isWeaponSelected = true;
                         break;
@@ -255,8 +263,7 @@ namespace DungeonApp
             string room = rooms[randIndex];
 
             //return that room to the Main()
-            return room;
-            //Refactoring means rewriting code to be more concise, readable, or performant:
+            return room;            
             //return rooms[new Random().Next(rooms.Length)];
 
         }//end GetRoom()
@@ -300,7 +307,40 @@ namespace DungeonApp
             Console.ResetColor();
             Console.ReadLine();
 
-        }//end TitleScreen()               
+        }//end TitleScreen()
+         //Generate Random Weapon Name
+        public static string WeaponNameGenerator()
+        {
+            //Array of weapon names
+            string[] nameList = new string[]
+            {
+                "Dawnbreaker",
+                "Voidtouched",
+                "Tempest Whisper",
+                "Rune",
+                "Frostfire",
+                "Mysticbane",
+                "Lunar Shard",
+                "Eclipsed Edge",
+                "Stormcaller's",
+                "Netherfang",
+                "Solstice",
+                "Cinderflame",
+                "Spiritbond",
+                "Oblivion",
+                "Eagle's Talon",
+                "Shadowspine",
+                "Dragon's Breath",
+                "Abyssal Crescent",
+                "Celestial Star",
+                "Inferno's Kiss",
+            };
 
+            int i = new Random().Next(0, 20);
+
+            string nameSelected = nameList[i];
+            return nameSelected;
+
+        }//end Weapon Name Generator
     }//end class
 }//end namespace

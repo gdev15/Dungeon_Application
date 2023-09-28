@@ -12,17 +12,29 @@ namespace DungeonLibrary
     {
 
         //Fields - none
+
         //Properties
         public Race PlayerRace { get; set; }
         public Weapon EquippedWeapon { get; set; } //CONTAINMENT
         public int Score { get; set; }
+
+
+
+        //Added for custom weapon damages
+        public int WeaponMinDamage { get; set; }
+        public int WeaponMaxDamage {  get; set; }
+
+
         //Added Default to allow a blank Player object to be generated before the user selects customizable options
         public Player() { }
         //Constructors
-        public Player(string name, int hitChance, int block, int maxLife, Race playerRace, Weapon equippedWeapon) : base(name, hitChance, block, maxLife)
+        public Player(string name, int hitChance, int block, int maxLife, int initiative, Race playerRace, Weapon equippedWeapon, int weaponMinDamage, int weaponMaxDamage) : base(name, hitChance, block, maxLife, initiative)
         {
             PlayerRace = playerRace;
             EquippedWeapon = equippedWeapon;
+
+            WeaponMinDamage = weaponMinDamage;
+            WeaponMaxDamage = weaponMaxDamage;
 
             #region Potential Expansion: Racial Bonuses
             switch (PlayerRace)
@@ -67,7 +79,8 @@ namespace DungeonLibrary
             }
 
             //add the weapon and the description to the base.ToString()
-            return base.ToString() + $"Weapon:\t{EquippedWeapon}\n" +
+            return base.ToString() + $"Weapon:\t{EquippedWeapon.Type}\n" +
+                                     $"Weapon Damage:\t{WeaponMinDamage} to {WeaponMaxDamage}\n" +
                                      $"Description: {description}\n" +
                                      $"You have defeated {Score} monster(s)";
         }//end ToString()
@@ -93,7 +106,7 @@ namespace DungeonLibrary
 
             //return new Random().Next(EquippedWeapon.MinDamage, EquippedWeapon.MaxDamage + 1);
         }
-
+        
         public override int CalcHitChance()
         {
             return HitChance + EquippedWeapon.BonusHitChance;
