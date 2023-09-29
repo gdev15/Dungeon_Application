@@ -17,6 +17,7 @@ namespace DungeonLibrary
         {
             HitBuff = hitBuff;
             HitChance += HitBuff;          
+         
         }
 
         public override string ToString()

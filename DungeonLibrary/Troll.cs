@@ -32,6 +32,7 @@ namespace DungeonLibrary
         {
             //throw new NotImplementedException();
             int result;//create the return object  
+            int totalDamage;
 
             Random rand = new Random();//setup necessary resources          
             result = rand.Next(MinDamage, MaxDamage);//modify the return object
