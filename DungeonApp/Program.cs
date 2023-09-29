@@ -1,5 +1,7 @@
 ﻿using DungeonLibrary;
 using System.CodeDom.Compiler;
+using System.Data;
+using System.Diagnostics.Metrics;
 using System.Numerics;
 using System.Threading;
 using System.Xml.Linq;
@@ -16,40 +18,90 @@ namespace DungeonApp
             TitleScreen();
             #endregion
 
+            
+
             #region Player Creation
             //Prompt user for character name   
-            Console.Write("Name your Character: ");
+            Console.Write("\n\tName your Character: ");
             string characterName = Console.ReadLine();
 
+            //Adding Recursion method
+            int counter = 0;
+
+            Console.WriteLine(); //Spacing
+            Console.Write("\t");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            TypingEffect(characterName, counter);
+           
 
             bool validSelection = false;
-            int userChoice;         
+            int userChoice = 0;         
             //Loop for player Race selection
             do
             {
-                Console.WriteLine("Choose your race: ");
+
+                TypingEffect(" choose your race: ", counter);
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine();
                 Console.WriteLine(
-                    $"1) Human\n" +
-                    $"2) Elf\n" +
-                    $"3) Dwarf\n" +
-                    $"4) Gnome\n"
+                    $"\t1) Human\n" +
+                    $"\t2) Elf\n" +
+                    $"\t3) Dwarf\n" +
+                    $"\t4) Gnome\n"
                     );
-                //User picks and the value is stored in the userChoice variable
-                int.TryParse(Console.ReadLine(), out userChoice);
-                if (userChoice > 0 && userChoice < 5)
-                {                                      
-                    validSelection = true;
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true); // The 'true' argument suppresses the key from being displayed in the console
+
+                //Digits only
+                if (char.IsDigit(keyInfo.KeyChar))
+                {
+
+                    userChoice = int.Parse(keyInfo.KeyChar.ToString());
+                    #region Prompts Selected Race
+                    if (userChoice == 1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("\tHuman\n");
+                        Console.ResetColor();
+                        validSelection = true;
+                    }
+                    if (userChoice == 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("\tElf\n");
+                        Console.ResetColor();
+                        validSelection = true;
+                    }
+                    if (userChoice == 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("\tDwarf\n");
+                        Console.ResetColor();
+                        validSelection = true;
+                    }
+                    if (userChoice == 4)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("\tGnome\n");
+                        Console.ResetColor();
+                        validSelection = true;
+                    }
+                    #endregion
+
+                 
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Choice.");
+                    Console.WriteLine("Invalid input. Please press a number key.");
+                    
                 }
 
             } while (!validSelection); //end of menu
 
             //Clear Console
-            Console.Clear();
 
+            #region Weapon Selection and Instantiate Player Object
             bool isWeaponSelected = false;
             int selector;
 
@@ -66,15 +118,15 @@ namespace DungeonApp
                 bool isTwoHanded = false;
                 string weaponName = WeaponNameGenerator(); //Generates a random weapon name
 
-                Console.WriteLine("Choose your weapon: ");
+                Console.WriteLine("\tChoose your weapon: ");
                 Console.WriteLine(
-                        $"1) Axe\n" +
-                        $"2) Bow\n" +
-                        $"3) Dagger\n" +
-                        $"4) Hammer\n" +
-                        $"5) Mace\n" +
-                        $"6) Staff\n" +
-                        $"7) Sword\n"
+                        $"\t1) Axe\n" +
+                        $"\t2) Bow\n" +
+                        $"\t3) Dagger\n" +
+                        $"\t4) Hammer\n" +
+                        $"\t5) Mace\n" +
+                        $"\t6) Staff\n" +
+                        $"\t7) Sword\n"
                     );
 
                 //Capture user's menu selection
@@ -145,12 +197,32 @@ namespace DungeonApp
                         break;
                 }
 
-            } while (!isWeaponSelected);           
+            } while (!isWeaponSelected);
 
-
-                    
             #endregion
 
+            #endregion
+
+            Console.Clear(); //Clear first scene
+
+            #region Player Spawning
+            //Add the player Spanwing Here Before being able to go into a room..
+
+            Console.WriteLine($"{player.Name} has entered the world of Zethal");
+
+            Thread.Sleep(1000);
+            LoadScreen(100);
+            LoadScreen(100);
+
+
+
+
+
+
+
+            #endregion
+
+            Console.Clear(); //Clear second
             //Game loop:
             bool exit = false;
             do
@@ -274,41 +346,112 @@ namespace DungeonApp
         {
             Console.WriteLine(@"
 
-                MMMMMO' ...,oXMMMMMMMMMMMMMMXo,... 'OMMMMM
-                MMMMMK,      ;OWMMMMMMMMMMWO;      ,KMMMMM
-                MMMMMN:   .'  .c0WMMMMMMW0c.  '.   :NMMMMM
-                MMMMMWk'  .;:'  .oKMMMMKo.  ':;.  'kWMMMMM
-                MMMMMMMXd,  .;:'  'kX0d'  ':;.  ,dXMMMMMMM
-                MMMMMMMMMNx;. .;:;;c,.  ':;. .;kNMMMMMMMMM
-                MMMMMMMMMMMNO:..:d;. .':;. .:ONMMMMMMMMMMM
-                MMMMMMMMMMMMMW0o;. ':c;. .cOWMMMMMMMMMMMMM
-                MMMMMMMWKXWMMXo. ':;.  .cc;oXMMWKKWMMMMMMM
-                MMMMMMXl..;oko'':;. ':::c:''oko;..lXMMMMMM
-                MMMMMWKo'    'cd;.;xXNO;.;dc'.   'oKWMMMMM
-                MMMNOdxO0o'    ,oONMMMMNOo,    'o0OxdONMMM
-                MMNdoKNO:';:'   'OWMMMMWO'   ':;':ONKodNMM
-                MM0d00:.  .xKx,  :XMMMMX:  ,xKx.  .:00d0MM
-                M0oclc,..lKWMMXxdKWMMMMWKdxXMMWKl..,clco0M
-                M.    :kKWMMMMMMMMMMMMMMMMMMMMMMWKk:    .M
-                M     :XMMMMMMMMMMMMMMMMMMMMMMMMMMX:     M
-                Ml.  ,OWMMMMMMMMMMMMMMMMMMMMMMMMMMWO,  .lM
+        MMMMMO' ...,oXMMMMMMMMMMMMMMXo,... 'OMMMMM
+        MMMMMK,      ;OWMMMMMMMMMMWO;      ,KMMMMM
+        MMMMMN:   .'  .c0WMMMMMMW0c.  '.   :NMMMMM
+        MMMMMWk'  .;:'  .oKMMMMKo.  ':;.  'kWMMMMM
+        MMMMMMMXd,  .;:'  'kX0d'  ':;.  ,dXMMMMMMM
+        MMMMMMMMMNx;. .;:;;c,.  ':;. .;kNMMMMMMMMM
+        MMMMMMMMMMMNO:..:d;. .':;. .:ONMMMMMMMMMMM
+        MMMMMMMMMMMMMW0o;. ':c;. .cOWMMMMMMMMMMMMM
+        MMMMMMMWKXWMMXo. ':;.  .cc;oXMMWKKWMMMMMMM
+        MMMMMMXl..;oko'':;. ':::c:''oko;..lXMMMMMM
+        MMMMMWKo'    'cd;.;xXNO;.;dc'.   'oKWMMMMM
+        MMMNOdxO0o'    ,oONMMMMNOo,    'o0OxdONMMM
+        MMNdoKNO:';:'   'OWMMMMWO'   ':;':ONKodNMM
+        MM0d00:.  .xKx,  :XMMMMX:  ,xKx.  .:00d0MM
+        M0oclc,..lKWMMXxdKWMMMMWKdxXMMWKl..,clco0M
+        M.    :kKWMMMMMMMMMMMMMMMMMMMMMMWKk:    .M
+        M     :XMMMMMMMMMMMMMMMMMMMMMMMMMMX:     M
+        Ml.  ,OWMMMMMMMMMMMMMMMMMMMMMMMMMMWO,  .lM
                 ");
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(@"
-                ************ DUNGEON HEROES **************
+        ************ DUNGEON HEROES **************
                 ");
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(@"
-                -------- Press Any Key to Continue -------
+        -------- Press Any Key to Continue -------
                 ");
             Console.ResetColor();
-            Console.ReadLine();
+            Console.ReadKey(true);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+        
+            Thread.Sleep(100);
+            Console.Write("\tW");
+            Thread.Sleep(100);
+            Console.Write("e");
+            Thread.Sleep(100);
+            Console.Write("l");
+            Thread.Sleep(100);
+            Console.Write("c");
+            Thread.Sleep(100);
+            Console.Write("o");
+            Thread.Sleep(100);
+            Console.Write("m");
+            Thread.Sleep(100);
+            Console.Write("e");
+
+            Thread.Sleep(100);
+            Console.Write(" ");
+            Thread.Sleep(100);
+            Console.Write("H");
+            Thread.Sleep(100);
+            Console.Write("e");
+            Thread.Sleep(100);
+            Console.Write("r");
+            Thread.Sleep(100);
+            Console.Write("o");
+            Thread.Sleep(100);
+            Console.Write("!");            
+            Console.ResetColor();
+
 
         }//end TitleScreen()
-         //Generate Random Weapon Name
+
+        public static void RaceMenuPrompt(string characterName)
+        {            
+     
+            Console.ResetColor();
+            Console.ReadKey(true);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            //Here my idea is to make a recursion method or loop to go through the characters within the character name to slowling prompt it out to the user.
+            Thread.Sleep(100);
+            Console.Write("\tW");
+            Thread.Sleep(100);
+            Console.Write("e");
+            Thread.Sleep(100);
+            Console.Write("l");
+            Thread.Sleep(100);
+            Console.Write("c");
+            Thread.Sleep(100);
+            Console.Write("o");
+            Thread.Sleep(100);
+            Console.Write("m");
+            Thread.Sleep(100);
+            Console.Write("e");
+
+            Thread.Sleep(100);
+            Console.Write(" ");
+            Thread.Sleep(100);
+            Console.Write("H");
+            Thread.Sleep(100);
+            Console.Write("e");
+            Thread.Sleep(100);
+            Console.Write("r");
+            Thread.Sleep(100);
+            Console.Write("o");
+            Thread.Sleep(100);
+            Console.Write("!");
+            Console.ResetColor();
+
+
+        }//end TitleScreen()
+
+        //Generate Random Weapon Name
         public static string WeaponNameGenerator()
         {
             //Array of weapon names
@@ -342,5 +485,36 @@ namespace DungeonApp
             return nameSelected;
 
         }//end Weapon Name Generator
+
+        //Recursion Implementation
+        public static void TypingEffect(string content, int counter)
+        {
+            // Base case: if counter is equal to the length of the string, return
+            if (counter == content.Length) return; 
+
+            char resultingChar = content[counter];
+            Thread.Sleep(100);
+            Console.Write(resultingChar);
+
+
+            // Recursive call
+            TypingEffect(content, counter + 1);
+        }
+
+        //LoadScreen to show visual loading where timout is the int in ms
+        public static void LoadScreen(int timeOut)
+        {
+            Console.Write(".");
+            Thread.Sleep(timeOut);
+            Console.Write(".");
+            Thread.Sleep(timeOut);
+            Console.Write(".");
+            Thread.Sleep(timeOut);
+            Console.Write(".");
+            Thread.Sleep(timeOut);
+            Console.Write(".");
+            Thread.Sleep(timeOut);
+            Console.Write(".");
+        }
     }//end class
 }//end namespace
