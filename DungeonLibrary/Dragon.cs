@@ -14,6 +14,10 @@ namespace DungeonLibrary
         public int DamageBuff { get; set; }
         public int HitBuff { get; set; }
 
+
+        //Default CTOR
+        public Dragon() { }
+
         //CTORS        
         public Dragon(string name, int hitChance, int block, int maxLife, int initiative, int minDamage, int maxDamage, string description, int dmgBuff, int hitBuff) : base(name, hitChance, block, maxLife, initiative, minDamage, maxDamage, description)
         {
@@ -35,25 +39,17 @@ namespace DungeonLibrary
         //Override method to Calc the Dmg buff
         public override int CalcDamage()
         {
-            //throw new NotImplementedException();
-            int result;//create the return object  
-
-            Random rand = new Random();//setup necessary resources          
-            result = rand.Next(MinDamage, MaxDamage);//modify the return object
-            //Prompt to check calculation
-            Console.WriteLine($"Before Mod: {result}\n");
-            result += DamageBuff;
-
+            int result = base.CalcDamage() + DamageBuff;
             if (result > MaxDamage)
             {
                 Console.WriteLine("Min damage can't be more than max! Max damage stat replaced");
                 result = MaxDamage;
 
             }
-            if (result <= 0)
+            if (result < 6)
             {
-                Console.WriteLine("Min damage has to be 1");
-                result = 1;
+                Console.WriteLine("Dragons never do 6 damage at a min.");
+                result = 6;
 
             }
             //Prompt to check calculation
@@ -62,22 +58,14 @@ namespace DungeonLibrary
             return result;//return the return object
         }
 
-        public override int CalcHitChance()
-        {
-            int result;//create the return object
+         public override int CalcHitChance()
+         {
+             int result = base.CalcHitChance();
+             return result;//return the return object
+         }
 
-            Random rand = new Random();//setup necessary resources
-
-            result = rand.Next(MinDamage, MaxDamage);//modify the return object           
-
-            if (result <= 0)
-            {
-                Console.WriteLine("HitBuff is 1");
-                result = 1;
-
-            }
-            return result;//return the return object
-        }
+      
+    
 
 
     }

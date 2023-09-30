@@ -13,6 +13,8 @@ namespace DungeonLibrary
         //PROPS
         public int DamageBuff {  get; set; }
 
+        //Default Constructor for unit testing
+        public Troll() { }
 
         //CTORS        
         public Troll(string name, int hitChance, int block, int maxLife, int initiative, int minDamage, int maxDamage, string description, int dmgBuff) : base(name, hitChance, block, maxLife, initiative, minDamage, maxDamage, description)
@@ -30,21 +32,12 @@ namespace DungeonLibrary
         //Override method to Calc the Dmg buff
         public override int CalcDamage()
         {
-            //throw new NotImplementedException();
-            int result;//create the return object  
-            int totalDamage;
-
-            Random rand = new Random();//setup necessary resources          
-            result = rand.Next(MinDamage, MaxDamage);//modify the return object
-            //Prompt to check calculation
-            Console.WriteLine($"Before Mod: {result}\n");
-            result += DamageBuff;
-            
+            int result = base.CalcDamage() + DamageBuff;
             if (result > MaxDamage)
             {
                 Console.WriteLine("Min damage can't be more than max! Max damage stat replaced");
-                result = MaxDamage;                
-             
+                result = MaxDamage;
+
             }
             if (result <= 0)
             {
@@ -56,6 +49,7 @@ namespace DungeonLibrary
             Console.WriteLine($"Damage Buff: +{DamageBuff}");
             Console.WriteLine($"After Mod: {result}\n");
             return result;//return the return object
+           
         }
 
 

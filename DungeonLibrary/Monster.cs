@@ -54,7 +54,7 @@ namespace DungeonLibrary
 
         public override int CalcDamage()
         {
-            //throw new NotImplementedException();
+            
             int result;//create the return object
 
             Random rand = new Random();//setup necessary resources
@@ -78,7 +78,7 @@ namespace DungeonLibrary
             //setup necessary resources
             Troll troll = new("Troll", 25, 15, 25,0, 2, 8, description, stat);
             Goblin goblin = new("Goblin", 50, 20, 20,0, 2, 8, description, stat);
-            Demon demon = new("Demon", 50, 20, 25,0, 2, 8, description, 0);
+            Demon demon = new("Demon", 50, 20, 25,0, 2, 8, description, stat);
             Undead undead = new("Undead", 50, 20, 25,0, 2, 8, description, stat);
             Dragon dragon = new("Dragon", 50, 20, 25,0, 2, 8, description, stat, stat);
             List<Monster> monsters = new()
