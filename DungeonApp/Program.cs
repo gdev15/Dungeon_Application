@@ -380,32 +380,32 @@ namespace DungeonApp
             Console.ReadKey(true);
             Console.ForegroundColor = ConsoleColor.Cyan;
         
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("\tW");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("e");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("l");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("c");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("o");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("m");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("e");
 
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write(" ");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("H");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("e");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("r");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("o");
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write("!");            
             Console.ResetColor();
 
@@ -493,7 +493,7 @@ namespace DungeonApp
             if (counter == content.Length) return; 
 
             char resultingChar = content[counter];
-            Thread.Sleep(100);
+            Thread.Sleep(75);
             Console.Write(resultingChar);
 
 
