@@ -138,7 +138,7 @@ namespace DungeonApp
                         maxDamage = 8;
                         
                         Weapon weapon = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded,     WeaponType.Axe);
-                        Player customPlayer = new(characterName, 70, 5, 40, 0, (Race)userChoice, weapon, minDamage, maxDamage);
+                        Player customPlayer = new(characterName, 70, 5, 75, 0, (Race)userChoice, weapon, minDamage, maxDamage);
                         player = customPlayer;
                         isWeaponSelected = true;
                         break;
@@ -147,7 +147,7 @@ namespace DungeonApp
                         minDamage = 1;
                         maxDamage = 10;                      
                         Weapon weapon2 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Bow);
-                        Player customPlayer2 = new(characterName, 70, 5, 40, 0, (Race)userChoice, weapon2, minDamage, maxDamage);
+                        Player customPlayer2 = new(characterName, 70, 5, 75, 0, (Race)userChoice, weapon2, minDamage, maxDamage);
                         player = customPlayer2;
                         isWeaponSelected = true;
                         break;
@@ -156,7 +156,7 @@ namespace DungeonApp
                         minDamage = 3;
                         maxDamage = 5;
                         Weapon weapon3 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Dagger);
-                        Player customPlayer3 = new(characterName, 70, 5, 40, 0,(Race)userChoice, weapon3, minDamage, maxDamage);
+                        Player customPlayer3 = new(characterName, 70, 5, 75, 0,(Race)userChoice, weapon3, minDamage, maxDamage);
                         player = customPlayer3;
                         isWeaponSelected = true;
                         break;
@@ -165,7 +165,7 @@ namespace DungeonApp
                         minDamage = 2;
                         maxDamage = 12;
                         Weapon weapon4 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Hammer);
-                        Player customPlayer4 = new(characterName, 70, 5, 40, 0,(Race)userChoice, weapon4, minDamage, maxDamage);
+                        Player customPlayer4 = new(characterName, 70, 5, 75, 0,(Race)userChoice, weapon4, minDamage, maxDamage);
                         player = customPlayer4;
                         isWeaponSelected = true;
                         break;
@@ -174,7 +174,7 @@ namespace DungeonApp
                         minDamage = 2;
                         maxDamage = 10;
                         Weapon weapon5 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Mace);
-                        Player customPlayer5 = new(characterName, 70, 5, 40, 0,(Race)userChoice, weapon5, minDamage, maxDamage);
+                        Player customPlayer5 = new(characterName, 70, 5, 75, 0,(Race)userChoice, weapon5, minDamage, maxDamage);
                         player = customPlayer5;
                         isWeaponSelected = true;
                         break;
@@ -182,7 +182,7 @@ namespace DungeonApp
                         minDamage = 1;
                         maxDamage = 8;
                         Weapon weapon6 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Staff);
-                        Player customPlayer6 = new(characterName, 70, 5, 40,0, (Race)userChoice, weapon6, minDamage, maxDamage);
+                        Player customPlayer6 = new(characterName, 70, 5, 75, 0, (Race)userChoice, weapon6, minDamage, maxDamage);
                         player = customPlayer6;
                         isWeaponSelected = true;
                         break;
@@ -191,7 +191,7 @@ namespace DungeonApp
                         minDamage = 2;
                         maxDamage = 10;
                         Weapon weapon7 = new Weapon(weaponName, minDamage, maxDamage, bonusHitChance, isTwoHanded, WeaponType.Sword);
-                        Player customPlayer7 = new(characterName, 70, 5, 40,0, (Race)userChoice, weapon7, minDamage, maxDamage);
+                        Player customPlayer7 = new(characterName, 70, 5, 75, 0, (Race)userChoice, weapon7, minDamage, maxDamage);
                         player = customPlayer7;
                         isWeaponSelected = true;
                         break;
@@ -232,7 +232,12 @@ namespace DungeonApp
                 Console.WriteLine(room);
                 //generate a monster in the room
                 Monster monster = Monster.GetMonster();
-                Console.Write("\nIn this room: ");
+
+                //Generate random description of the room
+                string encounterDescription = " ";
+                encounterDescription = EncounterDescription(encounterDescription);
+                Console.Write(encounterDescription);
+                Console.WriteLine("a ");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine(monster.Name);
                 Console.ResetColor();
@@ -305,7 +310,9 @@ namespace DungeonApp
             } while (!exit); //exit == false
             Console.WriteLine($"You have defeated {player.Score} monster{(player.Score == 1 ? "." : "s.")}");
         }//end Main()
-        //Custom method called GetRoom()
+
+
+        #region Methods
         private static string GetRoom()
         {
             //String array of room descriptions         
@@ -313,16 +320,24 @@ namespace DungeonApp
 
             string[] rooms =
             {
-                "The walls are adorned with portraits of fearsome dragons, while a stuffed unicorn head hangs above the fireplace.",
-                "An enormous crystal chandelier hangs from the ceiling, casting a rainbow of colors across the room.",
-                "A giant mushroom serves as the centerpiece of the room, surrounded by whimsical fairy lights.",
-                "The floor is covered in a thick layer of soft, green moss, making it feel like you're walking on a forest floor.",
-                "A bookshelf filled with magical tomes lines one wall, while a cauldron bubbles away in the corner.",
-                "A suit of armor stands guard at the entrance, but it seems to be nodding off on the job.",
-                "A large stone fireplace dominates the room, but instead of wood, it's filled with shimmering gold coins.",
-                "A giant spiderweb stretches across the ceiling, with a creepy-crawly arachnid lurking nearby.",
-                "A bed shaped like a giant clamshell takes up most of the space, complete with a fluffy pearl-white comforter.",
-                "A gargoyle perched on the windowsill keeps watch over the room, occasionally shooting a jet of water out of its mouth."
+                "The room is filled with an ethereal glow as a dozen floating orbs of light drift lazily through the air.",
+                "Sculpted fountains on either side gush with a mysterious deep blue liquid, emitting a sweet, intoxicating aroma.",
+                "Crystalline structures protrude from the walls, refracting the dim light into a mesmerizing dance of shadows.",
+                "In the center, a massive tree grows, its trunk twisted and gnarled, with glowing fruits hanging temptingly from the branches.",
+                "Tattered banners hang from the ceiling, hinting at a long-forgotten room.",
+                "An ornate table stands in the middle, laden with gleaming silverware and long-extinct delicacies.",
+                "Dainty stained-glass windows allow colorful shafts of light to pierce the otherwise dim room, revealing a large ornamental pool filled with shimmering fish.",
+                "A grand piano sits against one wall, its keys occasionally playing a haunting tune on their own.",
+                "Numerous clockwork contraptions and curious devices clatter and whirl on every available surface.",             
+                "Rumbling sounds echo from deep beneath as you notice that the room is balanced on a massive geode, its crystals sparkling below.",
+                "Frozen in time, a cascade of water seems to be pouring from one wall, droplets suspended mid-air, glittering like diamonds.",
+                "A series of pedestals showcase delicate glass terrariums, each containing a different miniature biome.",
+                "A circle of tall stone monoliths occupies the room, inscribed with runes that occasionally glow and hum.",
+                "The entire room is mirrored, reflecting endless versions of itself and those who dare to enter.",
+                "Smooth, petrified wooden pillars support the ceiling, while a gentle brook flows through the room, lined with luminescent flowers.",
+                "Giant hourglasses line the walls, their sands shifting in patterns that seem to defy the laws of time.",
+                "In the middle of the room, a massive obsidian obelisk stands, its surface occasionally rippling like liquid.",
+                "An alabaster pedestal holds a single, radiant feather that illuminates the room with a soft, golden glow."
             };
 
             //Build a Random
@@ -338,8 +353,40 @@ namespace DungeonApp
             return room;            
             //return rooms[new Random().Next(rooms.Length)];
 
-        }//end GetRoom()
+        }//end GetRoom()       
 
+        //Generate Random Encounter Description
+        public static string EncounterDescription(string description){
+            //Array of weapon names
+            string[] descriptionList = new string[]
+            {
+                "\nAs you turn a shadowy corner of the dungeon, you suddenly face ",
+                "\nTreading softly on the ancient stones, you accidentally stumble upon ",
+                "\nA mysterious chanting draws your attention, leading you to ",
+                "\nFollowing the faint flicker of torchlight, you abruptly come across ",
+                "\nThe echoes of footsteps not your own direct you to a chilling sight ",
+                "\nAs you pry open an age-worn door, the room beyond reveals ",
+                "\nThe scent of something unfamiliar tugs at your senses, guiding you towards ",
+                "\nDrawn by a strange magnetic pull, you find yourself suddenly confronting ",
+                "\nA sudden gust of cold wind sends shivers down your spine as you gaze upon: ",
+                "\nNavigating through a maze of narrow corridors, you almost trip over ",
+                "\nAn unexpected splash in a nearby underground stream draws your gaze to ",
+                "\nWhispers in a tongue long forgotten lead you to a chamber containing ",
+                "\nIntrigued by the soft glow emanating from a crack in the wall, you discover ",
+                "\nA bizarre and otherworldly melody lures you into a cavern where you see ",
+                "\nYour torchlight reveals the intricate markings on the ground, pointing you directly to ",
+                "\nThe feeling of being watched becomes undeniable as you lock eyes with ",
+                "\nA mysterious rumble beneath your feet culminates in the appearance of ",
+                "\nAs you decipher the runes on a peculiar artifact, the surroundings shift to unveil ",
+                "\nStartled by a sudden clanking of chains, your eyes dart around, landing on ",
+                "\nWithout warning, the room is illuminated by a radiant light, unveiling the presence of ",
+            };
+
+            int i = new Random().Next(0, 20);
+
+            description = descriptionList[i];
+            return description;
+        }
      
         //TitleScreen() method to prompt the user with the intro to the game.
         public static void TitleScreen()
@@ -516,5 +563,8 @@ namespace DungeonApp
             Thread.Sleep(timeOut);
             Console.Write(".");
         }
+
+        #endregion
+
     }//end class
 }//end namespace
