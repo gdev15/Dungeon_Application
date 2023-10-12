@@ -35,19 +35,19 @@ namespace DungeonLibrary
             int result = base.CalcDamage() + DamageBuff;
             if (result > MaxDamage)
             {
-                Console.WriteLine("Min damage can't be more than max! Max damage stat replaced");
+               // Console.WriteLine("Min damage can't be more than max! Max damage stat replaced");
                 result = MaxDamage;
 
             }
             if (result <= 0)
             {
-                Console.WriteLine("Min damage has to be 1");
+                //Console.WriteLine("Min damage has to be 1");
                 result = 1;
 
             }
             //Prompt to check calculation
-            Console.WriteLine($"Damage Buff: +{DamageBuff}");
-            Console.WriteLine($"After Mod: {result}\n");
+           //Console.WriteLine($"Damage Buff: +{DamageBuff}");
+            //Console.WriteLine($"After Mod: {result}\n");
             return result;//return the return object
            
         }

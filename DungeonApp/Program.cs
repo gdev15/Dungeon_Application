@@ -241,6 +241,7 @@ namespace DungeonApp
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine(monster.Name);
                 Console.ResetColor();
+
                 //Encounter loop:
                 bool reload = false;//reload = true to "reload" a room and a monster
                 do
@@ -256,7 +257,14 @@ namespace DungeonApp
                     //Capture user's menu selection
                     string menuSelection = Console.ReadKey(true).Key.ToString();//Executes upon input without hitting enter
                     //Clear the console AFTER user input
-                    Console.Clear();
+                   Console.Clear();
+
+                    Console.WriteLine("\n" + room + "\n" + encounterDescription);
+                    Console.Write("a ");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(monster.Name + "\n" +"\n");
+                   
+                    Console.ResetColor();
 
                     //using branching logic to act upon the user's menu selection
                     switch (menuSelection)

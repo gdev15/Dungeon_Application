@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace DungeonLibrary
             {
                 attacker.Initiative = RollInitiative();
                 defender.Initiative = RollInitiative();
-                //Conditoin to add bonus initiative to a Demon
+                //Condition to add bonus initiative to a Demon
                 if(attacker.Name == "Demon")
                 {
                     //Console.WriteLine($"\nDEMON Before BONUS:  {attacker.Initiative}\n");
@@ -69,16 +70,16 @@ namespace DungeonLibrary
                 if (player.Initiative >= monster.Initiative)
                 {
                     DoAttack(player, monster);
-                    Console.WriteLine("Player Attacked!");
+                   // Console.WriteLine("Player Attacked!");
                     DoAttack(monster, player);
-                    Console.WriteLine("Monster Attacked!");
+                   // Console.WriteLine("Monster Attacked!");
                 }
                 else
                 {
                     DoAttack(monster, player);
-                    Console.WriteLine("Monster Attacked!");
+                   // Console.WriteLine("Monster Attacked!");
                     DoAttack(player, monster);
-                    Console.WriteLine("Player Attacked!");
+                  //  Console.WriteLine("Player Attacked!");
                 }
                 return false;//monster is still alive
             }
@@ -102,6 +103,8 @@ namespace DungeonLibrary
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nYou killed {monster.Name}!\n");
             Console.ResetColor();
+            Thread.Sleep(1000);
+            Console.Clear();
             return true;//monster has died!
         }
         //a
